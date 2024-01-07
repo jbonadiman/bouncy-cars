@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://b0m17jn5l86xx"]
+
+[ext_resource type="Script" path="res://nodes/screens/screen.gd" id="1_of2w1"]
+
+[node name="Screen" type="MarginContainer"]
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("1_of2w1")

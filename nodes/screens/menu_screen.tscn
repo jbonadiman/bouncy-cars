@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3 uid="uid://tymvivm8nlwr"]
+
+[ext_resource type="Script" path="res://nodes/screens/menu_screen.gd" id="1_5cv3i"]
+
+[node name="MenuScreen" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_5cv3i")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+
+[node name="NewGame" type="Button" parent="Center/Buttons"]
+layout_mode = 2
+text = "new game"
+
+[node name="Quit" type="Button" parent="Center/Buttons"]
+layout_mode = 2
+text = "quit"
+
+[connection signal="pressed" from="Center/Buttons/NewGame" to="." method="_on_new_game_pressed"]
+[connection signal="pressed" from="Center/Buttons/Quit" to="." method="_on_quit_pressed"]

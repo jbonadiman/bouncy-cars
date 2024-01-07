@@ -1,0 +1,36 @@
+[gd_scene load_steps=2 format=3 uid="uid://c3nveao5sdbeg"]
+
+[ext_resource type="Script" path="res://nodes/screens/new_game_screen.gd" id="1_qhj7c"]
+
+[node name="NewGameScreen" type="MarginContainer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_qhj7c")
+
+[node name="Center" type="CenterContainer" parent="."]
+layout_mode = 2
+
+[node name="Buttons" type="VBoxContainer" parent="Center"]
+layout_mode = 2
+
+[node name="Back" type="Button" parent="Center/Buttons"]
+layout_mode = 2
+text = "back"
+
+[node name="Seed" type="HBoxContainer" parent="Center/Buttons"]
+layout_mode = 2
+
+[node name="Phrase" type="LineEdit" parent="Center/Buttons/Seed"]
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+
+[node name="Play" type="Button" parent="Center/Buttons/Seed"]
+layout_mode = 2
+text = "play"
+
+[connection signal="pressed" from="Center/Buttons/Back" to="." method="_on_back_pressed"]
+[connection signal="text_changed" from="Center/Buttons/Seed/Phrase" to="." method="_on_phrase_text_changed"]
+[connection signal="pressed" from="Center/Buttons/Seed/Play" to="." method="_on_play_pressed"]
