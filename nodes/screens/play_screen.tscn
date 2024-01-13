@@ -1,10 +1,10 @@
 [gd_scene load_steps=8 format=3 uid="uid://my7dy4r67j5o"]
 
 [ext_resource type="Script" path="res://nodes/screens/play_screen.gd" id="1_hlntq"]
-[ext_resource type="PackedScene" uid="uid://8yr47ho1sp6x" path="res://nodes/players/digger_player.tscn" id="2_k7e4u"]
+[ext_resource type="PackedScene" uid="uid://bwp8u8fpv44o" path="res://nodes/players/digger_player.tscn" id="2_k7e4u"]
 [ext_resource type="Texture2D" uid="uid://dn5ye4rbmjd28" path="res://images/tiles.png" id="2_tyujl"]
-[ext_resource type="PackedScene" uid="uid://dfn1vi6t7534l" path="res://nodes/players/fire_truck_player.tscn" id="3_vqc0t"]
-[ext_resource type="PackedScene" uid="uid://cqwwekegocf74" path="res://nodes/players/monster_truck_player.tscn" id="4_pbnus"]
+[ext_resource type="PackedScene" uid="uid://dswq7xf3iq5yq" path="res://nodes/players/fire_truck_player.tscn" id="3_vqc0t"]
+[ext_resource type="PackedScene" uid="uid://bxqy3scb513vd" path="res://nodes/players/monster_truck_player.tscn" id="4_pbnus"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ye8lp"]
 texture = ExtResource("2_tyujl")

@@ -9,7 +9,10 @@ var map: Dictionary
 @onready var _tiles := $Tiles as TileMap
 
 var player_1_vehicle: GamePlayer
+var player_1_next_waypoint_index: int
 var player_2_vehicle: GamePlayer
+var ordered_waypoint_positions: Array[Vector2] = []
+
 
 func _ready():
 	reset()
@@ -19,9 +22,29 @@ func reset() -> void:
 	map = Generation.get_map(Variables.current_phrase)
 
 	draw_map()
-	draw_players()
+	var player_positions = draw_players()
+	calculate_waypoints(player_positions)
+	player_1_next_waypoint_index = 0
 
-	calculate_waypoints()
+
+func _physics_process(_delta: float) -> void:
+	var player_1_next_waypoint = ordered_waypoint_positions[player_1_next_waypoint_index]
+
+	var player_1_next_waypoint_position := _tiles.map_to_local(Vector2(player_1_next_waypoint.x, player_1_next_waypoint.y))
+
+	if player_1_vehicle.global_position.distance_to(player_1_next_waypoint_position) < 100:
+		player_1_vehicle.show_waypoint = false
+
+		if player_1_vehicle.global_position.distance_to(player_1_next_waypoint_position) < 50:
+			player_1_next_waypoint_index += 1
+
+			if player_1_next_waypoint_index >= ordered_waypoint_positions.size():
+				player_1_next_waypoint_index = 0
+
+			return
+	else:
+		player_1_vehicle.show_waypoint = true
+		player_1_vehicle.waypoint_position = player_1_next_waypoint_position
 
 
 func draw_map() -> void:
@@ -61,6 +84,14 @@ func draw_players() -> Dictionary:
 
 	player_2_vehicle = \
 		vehicle_scenes[map.generator.randi() % vehicle_scenes.size()].instantiate()
+
+	player_2_vehicle.controls = {
+		"left": "ui_cancel",
+		"right": "ui_cancel",
+		"accelerate": "ui_cancel",
+		"slow": "ui_cancel"
+	}
+
 	add_child(player_2_vehicle)
 	player_2_vehicle.position = player_2_start_position
 
@@ -93,8 +124,47 @@ func rotate_players(player_1: Dictionary) -> int:
 	return degrees
 
 
-func calculate_waypoints() -> void:
-	pass
+func calculate_waypoints(player_positions: Dictionary) -> void:
+	var unordered_waypoints = map.waypoints.duplicate() as Array
+	var start_position: Vector2
+
+	while unordered_waypoints.size() > 0:
+		if ordered_waypoint_positions.size() == 0:
+			start_position = Vector2(
+				player_positions.start_cells.player_1.x,
+				player_positions.start_cells.player_1.y)
+		else:
+			start_position = ordered_waypoint_positions[ordered_waypoint_positions.size() - 1]
+
+		var nearest_waypoint = unordered_waypoints[0]
+		var nearest_waypoint_position = Vector2(
+			nearest_waypoint.x,
+			nearest_waypoint.y)
+
+		for waypoint in unordered_waypoints:
+			if ordered_waypoint_positions.size() < 2:
+				if player_positions.degrees == 0 and waypoint.x < player_positions.start_cells.player_1.x:
+					continue
+
+				if player_positions.degrees == 90 and waypoint.y < player_positions.start_cells.player_1.y:
+					continue
+
+				if player_positions.degrees == 180 and waypoint.x > player_positions.start_cells.player_1.x:
+					continue
+
+				if player_positions.degrees == -90 and waypoint.y > player_positions.start_cells.player_1.y:
+					continue
+
+			var waypoint_position = Vector2(waypoint.x, waypoint.y)
+
+			if waypoint_position.distance_squared_to(start_position) < \
+				nearest_waypoint_position.distance_squared_to(start_position):
+
+				nearest_waypoint = waypoint
+				nearest_waypoint_position = waypoint_position
+
+		ordered_waypoint_positions.append(nearest_waypoint_position)
+		unordered_waypoints.erase(nearest_waypoint)
 
 
 func get_start_cells() -> Dictionary:
@@ -118,7 +188,7 @@ func get_start_cells() -> Dictionary:
 	}
 
 
-func cells_are_closed(player_1: Dictionary, player_2: Dictionary) -> bool:
+func cells_are_close(player_1: Dictionary, player_2: Dictionary) -> bool:
 	if player_1.x == player_2.x \
 	and (player_1.y == player_2.y - 1 or player_1.y == player_2.y + 1):
 		return true

@@ -1,3 +1,5 @@
 {
-  "godot_tools.editor_path": "c:\\Users\\joao\\scoop\\apps\\godot\\current\\godot.exe"
+  "godot_tools.editor_path": "c:\\Users\\joao\\scoop\\apps\\godot\\current\\godot.exe",
+  "editor.indentSize": "tabSize",
+  "editor.tabSize": 2
 }

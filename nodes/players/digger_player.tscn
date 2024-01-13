@@ -1,19 +1,19 @@
-[gd_scene load_steps=4 format=3 uid="uid://8yr47ho1sp6x"]
+[gd_scene load_steps=5 format=3 uid="uid://bwp8u8fpv44o"]
 
-[ext_resource type="Script" path="res://nodes/players/digger_player.gd" id="1_2x4pb"]
+[ext_resource type="PackedScene" uid="uid://wlwq6prc5jmu" path="res://nodes/players/player.tscn" id="1_snthj"]
+[ext_resource type="Script" path="res://nodes/players/digger_player.gd" id="2_0tc5h"]
 [ext_resource type="Texture2D" uid="uid://c2aqollht8khb" path="res://images/cars.png" id="2_dvny3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5biup"]
 atlas = ExtResource("2_dvny3")
 region = Rect2(80, 0, 16, 16)
 
-[node name="DiggerPlayer" type="CharacterBody2D"]
-script = ExtResource("1_2x4pb")
+[node name="DiggerPlayer" instance=ExtResource("1_snthj")]
+script = ExtResource("2_0tc5h")
 
-[node name="Sprite" type="Sprite2D" parent="."]
-texture_filter = 1
+[node name="Sprite" parent="." index="0"]
 texture = SubResource("AtlasTexture_5biup")
 
-[node name="Collider" type="CollisionPolygon2D" parent="."]
+[node name="Collider" parent="." index="1"]
 build_mode = 1
 polygon = PackedVector2Array(-6, -5, 2, -5, 7, -4, 7, 3, 2, 4, -6, 4)
